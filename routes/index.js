@@ -3,9 +3,9 @@ var router = express.Router();
 
 
 // controllers 
-const projectController = require('../app/Http/controllers/projectController');
-const pageNotFoundController = require('../app/Http/controllers/pageNotFoundController');
-const labelController = require('../app/Http/controllers/labelController');
+const projectController = require('../app/http/controllers/projectController');
+const pageNotFoundController = require('../app/http/controllers/pageNotFoundController');
+const labelController = require('../app/http/controllers/labelController');
 
 router.get('/', projectController.index);
 router.use('/project',require('./project'));

@@ -13,6 +13,18 @@ const projectSchema = new mongoose.Schema(
         author:{
             type:String,
             required: true
+        },
+        project_type: {
+            type: String,
+            required: true
+        },
+        readme_file: {
+            type: Boolean,
+            default: false
+        },
+        gitignore:{
+            type: Boolean,
+            default: false
         }
 
     },{

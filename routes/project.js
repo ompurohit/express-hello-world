@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const projectController = require('../app/Http/controllers/projectController');
+const projectController = require('../app/http/controllers/projectController');
 
 
 router.get('/', projectController.index);

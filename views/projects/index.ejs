@@ -1,52 +1,32 @@
-<div class="relative overflow-x-auto my-5">
-    <div class="flex items-center justify-end p-4">
-        <a href="/project/create"
-            class="inline-flex items-center text-white bg-blue-600 border border-gray-300 focus:outline-none hover:bg-blue-500 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-            type="button">
-            Create Project
-        </a>
+
+<div class="card">
+  <div class="card-body">
+    <div class="card-title d-flex">
+        <a href="/project/create" class="btn btn-block btn-lg btn-gradient-primary mt-4 ml-auto">+ Create project</a>
     </div>
-
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Projects name</th>
+          <th>Description</th>
+          <th>Author</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(data.length) {%> <% for(let item of data) {%>
+        <tr>
+          <td><%= item.project %> <a href="/project/<%= item._id %>"><i class="mdi mdi-open-in-new"></i></a></td>
+          <td><%= item.description %></td>
+          <td class="text-danger"><%= item.author %></i></td>
+          <td><label class="badge badge-danger">Pending</label></td>
+        </tr>
+        <% } %> <% }else{ %>
             <tr>
-                <th scope="col" class="px-6 py-3">
-                    Projects name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Description
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Author
-                </th>
+                <td colspan="4">no record found...</td>
             </tr>
-        </thead>
-        <tbody>
-            <% if(data.length) {%>
-                <% for(let item of data) {%>
-                <tr class="bg-white dark:bg-gray-800">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="/project/<%= item._id %>"><%= item.project %></a>
-                    </th>
-                    <td class="px-6 py-4">
-                        <%= item.description %>
-                    </td>
-                    <td class="px-6 py-4">
-                        <%= item.author %>
-                    </td>
-
-                </tr>
-                <% } %>
-            <% }else{ %>
-                <tr class="bg-white dark:bg-gray-800">
-                    <th scope="row" colspan="3" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        No record found...
-                    </th>
-                </tr>
-            <% } %>
-        </tbody>
+        <% } %>
+      </tbody>
     </table>
-    <% if (data.length>10) {%>
-        <%- include('../partials/_pagination')%>
-    <% } %>
+  </div>
 </div>

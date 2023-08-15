@@ -7,7 +7,8 @@ module.exports = {
         try{
             const projects = await Project.find({});
             return response.render('projects/index',{
-                title: 'Create Project',
+                title: 'Projects',
+                icon: 'library-books',
                 data: projects
             });
         } catch (e) {
@@ -17,17 +18,21 @@ module.exports = {
 
     create: (request, response) => {
         return response.render('projects/create',{
-            title: 'Create Project'
+            title: 'Create Project',
+            icon: 'library-books',
         });
     },
 
     store: async (request, response) => {
         try{
-            // console.log('before creating ',request.body);
+            console.log('before creating ',request.body);
             const project = await Project.create({
                 project: request.body.project,
                 description: request.body.description,
-                author: request.body.author
+                author: request.body.author,
+                project_type: request.body.project_type,
+                readme_file: request.body.readme_file ? true : false,
+                gitignore: request.body.gitignore ? true : false
             });
             const issue_url = `/project/${project._id}`;
             return response.redirect(issue_url);
@@ -48,6 +53,7 @@ module.exports = {
             
             return response.render('issues/create', {
                 title: 'Create Issues',
+                icon: 'bug',
                 project: project,
                 data: issues,
                 labels: labels

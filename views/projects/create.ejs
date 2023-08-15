@@ -1,29 +1,77 @@
-<div
-    class="my-5 p-5 mx-auto w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <form method="post" action="/project/store">
-        <div class="relative z-0 w-full mb-6 group">
-            <input type="text" name="project" id="name"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " required />
-            <label for="name"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Project
-                name</label>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Create a new project</h4>
+    <p class="card-description">
+      A repository contains all project files, including the revision history.
+      Already have a project repository elsewhere?
+    </p>
+    <hr />
+    <p class="text-secondary text-small">
+      Required fields are marked with an asterisk
+      <span class="text-danger">(*)</span>.
+    </p>
+    <form class="forms-sample" method="post" action="/project/store">
+      <div class="form-group">
+        <label for="ownerName">Owner Name <span class="text-danger">*</span></label>
+        <input type="text" name="author" class="form-control" id="ownerName" placeholder="owner name" required/>
+      </div>
+      <div class="form-group">
+        <label for="projectName">Project Name <span class="text-danger">*</span></label>
+        <input type="text" name="project" class="form-control" id="projectName" placeholder="project name" required/>
+      </div>
+      <div class="form-group">
+        <label for="description">Description <span class="text-danger">*</span></label>
+        <textarea name="description" class="form-control" id="description" cols="15" rows="5" required></textarea>
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <label class="form-check-label">
+            <i class="mdi mdi-book-variant text-secondary"></i>
+            <input type="radio" class="form-check-input" name="project_type" value="public" id="public"
+              value="public" required/>
+            Public
+          </label>
+          <span class="text-secondary text-small ml-5">Anyone on the internet can see this repository. You choose who
+            can
+            commit.</span>
         </div>
-        <div class="relative z-0 w-full mb-6 group">
-            <input type="text" name="description" id="description"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " required />
-            <label for="description"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Description</label>
+
+        <div class="form-check">
+          <label class="form-check-label">
+            <i class="mdi mdi-lock text-secondary"></i>
+            <input type="radio" class="form-check-input" name="project_type" id="private" value="private" required/>
+            Private
+          </label>
+          <span class="text-secondary text-small ml-5">You choose who can see and commit to this repository.</span>
         </div>
-        <div class="relative z-0 w-full mb-6 group">
-            <input type="text" name="author" id="author"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" " required />
-            <label for="author"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Author</label>
+      </div>
+      <hr />
+      <div class="form-group">
+        <h4 class="text-secondary">Initialize this repository with:</h4>
+        <div class="form-check form-check-flat form-check-primary">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" name="readme_file" />Add a README file
+          </label>
+          <span class="text-secondary text-small ml-5">This is where you can write a long description for your project. <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes">Learn more about READMEs.</a></span>
         </div>
-        <button type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create</button>
+      </div>
+      <div class="form-group">
+        <div class="form-check form-check-flat form-check-primary">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" name="gitignore" />Add .gitignore
+          </label>
+        <span class="text-secondary text-small ml-5">Choose which files not to track from a list of templates. <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files">Learn more about ignoring files.</a></span>
+        </div>
+
+      </div>
+      <div class="form-group">
+        <span class="text-secondary text-small"><i class="mdi mdi-information text-secondary"></i> You are creating a public repository in your personal account.</span>
+      </div>
+      
+      <button type="submit" class="btn btn-gradient-primary me-2">
+        Create Project
+      </button>
+      <button type="button" class="btn btn-light">Cancel</button>
     </form>
+  </div>
 </div>
