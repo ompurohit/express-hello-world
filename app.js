@@ -5,7 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
-const db = require('./config/mongoose');
+const db = require('./app/config/mongoose');
+const session = require('./app/config/session');
+
 
 app.use(expressLayouts);
 
@@ -24,7 +26,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// initialize session 
+
+
 // initialize routes 
 app.use('/',require('./routes'));
+
+// set root path 
+global.rootPath = path.resolve(__dirname);
 
 module.exports = app;

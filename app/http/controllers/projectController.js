@@ -1,11 +1,14 @@
 const Project = require("../../models/project");
 const Issue = require("../../models/issue");
 const Label = require("../../models/label");
+const FileSystemController = require('./fileSystemController');
 
 module.exports = {
     index: async (request,response) => {
         try{
             const projects = await Project.find({});
+            
+
             return response.render('projects/index',{
                 title: 'Projects',
                 icon: 'library-books',
@@ -26,6 +29,13 @@ module.exports = {
     store: async (request, response) => {
         try{
             console.log('before creating ',request.body);
+            // check if project is already exists 
+            const alreadyExists = Project.exists({project: request.body.project});
+            if(alreadyExists){
+                console.log('already exists');
+                return true;
+            }
+
             const project = await Project.create({
                 project: request.body.project,
                 description: request.body.description,
@@ -34,6 +44,10 @@ module.exports = {
                 readme_file: request.body.readme_file ? true : false,
                 gitignore: request.body.gitignore ? true : false
             });
+            
+            // create project folder in storage with optional files
+            FileSystemController.create(project);
+
             const issue_url = `/project/${project._id}`;
             return response.redirect(issue_url);
         }catch(e){
@@ -61,5 +75,6 @@ module.exports = {
         } catch (e) {
             console.error('error when fetching projects', e);
         }
-    }
+    },
+
 }
