@@ -33,7 +33,8 @@ module.exports = {
             const alreadyExists = Project.exists({project: request.body.project});
             if(alreadyExists){
                 console.log('already exists');
-                return true;
+                request.flash('message', 'This name is already exists...');
+                return response.redirect('back');
             }
 
             const project = await Project.create({
