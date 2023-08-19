@@ -18,6 +18,12 @@ const projectSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        
+        project_path: {
+            type: String,
+            required: true
+        },
+        
         readme_file: {
             type: Boolean,
             default: false

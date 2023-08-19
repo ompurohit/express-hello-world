@@ -1,166 +1,112 @@
-<script src="/js/auto-search-script.js"></script>
-
-<div class="relative overflow-x-auto my-5">
-  <div
-    class="mx-5 p-5 my-5 w-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-  >
-  <h4 class="text-xs text-gray-900 uppercase dark:text-gray-400 mb-4">Create <%= project.project %>'s Issues</h4>
-   <form method="post" action="/issues/store">
-        <div class="grid gap-x-4 grid-cols-4 justify-items-end">
-            <input type="hidden" name="project_id" value="<%= project._id%>">
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="title"
-                id="title"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="title"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >Title</label
-              >
+<link rel="stylesheet" href="/css/editable.css">
+<script src="/js/custom/auto-search-script.js"></script>
+<div class="row">
+  <div class="col-lg-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-description"> Create <%= project.project %>'s Issues</p>
+        <form method="post" action="/issues/store" class="form-inline">
+          <input type="hidden" name="project_id" value="<%= project._id%>">
+          <div class="row">
+            <div class="col-md-12 form-inline">
+              <label class="sr-only" for="title">Title</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="title" placeholder="Title" name="title" required>
+      
+              <label class="sr-only" for="description">Description</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="description" placeholder="Description" name="description" required>
+    
+                
+              <label class="sr-only" for="author">Author</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="author" placeholder="author" name="author">
             </div>
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="description"
-                id="description"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="description"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >Description</label
-              >
-            </div>
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="label"
-                id="label"
-                oninput="getInputStoke()"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="label"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >Labels</label
-              >
-              <div class="relative border-gray-200 rounded-b-lg shadow-md pl-2 py-3 hidden" id="auto-search-box">
-                <div class=" divide-y divide-gray-400 " id="search-container">
-                  
-                </div>
+            <div class="col-md-12 form-inline">
+              <!-- <label class="sr-only" for="label">Label</label> -->
+              <input type="hidden" name="labels" id="labelInputs" value="">
+              <div class="tag-area form-control padding-4">
+                  <label for="tag-input" class="label sr-only" >Add Label</label>
+                  <ul>
+                      <input type="text" class="tag-input" id="tag-input" placeholder="Add labels"/>
+                  </ul>
               </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-gradient-primary mb-2">Create</button>
+              </div>
+
             </div>
-            <div class="relative z-0 w-full mb-6 group">
-              <input
-                type="text"
-                name="author"
-                id="author"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                for="author"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                >Author</label
-              >
-            </div>
-            <button
-              type="submit"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 col-end-5 col-span-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Create
-            </button>
-        </div>
-    </form>
+          </div>
+
+        </form>
+      </div>
+    </div>
   </div>
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
-      <tr>
-        <th scope="col" class="px-6 py-3">Title</th>
-        <th scope="col" class="px-6 py-3">Description</th>
-        <th scope="col" class="px-6 py-3">Labels</th>
-        <th scope="col" class="px-6 py-3">Author</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if(data.length) {%> <% for(let item of data) {%>
-      <tr class="bg-white dark:bg-gray-800">
-        <th
-          scope="row"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <a href="/project/<%= item._id %>"> <%= item.title %> </a>
-        </th>
-        <td class="px-6 py-4"><%= item.description %></td>
-        <td class="px-6 py-4">
-          <% if(item.labels.length) {%> 
-            <% for (const label of item.labels) { %>
-              <%= label.name %>,
-            <%}%>
-          <%}else{%> - <%}%>
-        </td>
-        <td class="px-6 py-4"><%= item.author %></td>
-      </tr>
-      <% } %> <% }else{ %>
-      <tr class="bg-white dark:bg-gray-800">
-        <th
-          scope="row"
-          colspan="4"
-          class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <span class="mr-auto">No record found...</span>
-        </th>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
-  <% if(data.length>10) { %>
-    <%- include('../partials/_pagination')%>
-  <% } %>
+  <div class="col-lg-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-description">Issue Lists:</code>
+        </p>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th> Author </th>
+              <th> Title </th>
+              <th> Description </th>
+              <th> Status </th>
+              <th> Labels </th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(data.length) {%>
+              <% for(let item of data) {%>
+                <tr>
+                  <td class="py-1 author-avatar">
+                    <img src="/images/faces-clipart/pic-1.png" alt="image" />
+                    <%= item.author %>
+                  </td>
+                  <td>
+                      <%= item.title %>
+                  </td>
+                  <td>
+                    <%= item.description %>
+                  </td>
+                  <td>
+                    <label class="badge badge-<%= item.status ? 'danger' : 'success' %>">
+                      <%= item.status ? 'Open' : 'Closed' %>
+                    </label>
+                  </td>
+                  <td>
+                    <% if(item.labels.length) {%>
+                      <% for (const label of item.labels) { %>
+                        <%= label.name %>,
+                      <%}%>
+                    <%}else{%>
+                    -
+                    <%}%>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                      <span class="btn-icon mr-2">
+                        <a href="/issues/edit/<%= item.id %>" class="text-white">
+                          <i class="mdi mdi-pencil"></i>
+                        </a>
+                      </span>
+                      <span class="btn-icon ">
+                        <a href="/issues/delete/<%= item._id %>" class="text-white" >
+                          <i class="mdi mdi-delete"></i>
+                        </a>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% }else{ %>
+              <tr>
+                <td colspan="6" align="center">no record found ...</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Striped Table</h4>
-                    <p class="card-description"> Add class <code>.table-striped</code>
-                    </p>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th> Author </th>
-                          <th> Title </th>
-                          <th> Description </th>
-                          <th> Status </th>
-                          <th> Labels </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="py-1">
-                            <img src="../../assets/images/faces-clipart/pic-1.png" alt="image" />
-                          </td>
-                          <td> Herman Beck </td>
-                          <td>
-                            <div class="progress">
-                              <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </td>
-                          <td> $ 77.99 </td>
-                          <td> May 15, 2015 </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>

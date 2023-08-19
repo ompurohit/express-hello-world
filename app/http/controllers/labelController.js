@@ -16,7 +16,7 @@ module.exports = {
         // if string have a value with comma seprated then split it, into the array 
         if(name.indexOf(',') > -1){
             labels_array = name.split(',');
-            console.log(labels_array);
+            // console.log(labels_array);
         }else{
             labels_array.push(name.trim());
         }

@@ -15,6 +15,12 @@ const issueSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        
+        status: {
+            type: Boolean,
+            default: true
+        },
+
         labels: [
             {
                 type: mongoose.Schema.Types.ObjectId,

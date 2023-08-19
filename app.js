@@ -35,14 +35,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret:process.env.SESSION_SECRET,
     saveUninitialized: true,
-    resave: true
+    resave: true,
+    cookie: {maxAge:60000}
 }));
   
 app.use(flash());
 
 // initialize routes 
 app.use('/',require('./routes'));
-
+app.set("layout 404", false);
+app.set("layout 500", false);
 // set root path 
 global.rootPath = path.resolve(__dirname);
 

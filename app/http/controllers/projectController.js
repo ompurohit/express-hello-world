@@ -8,10 +8,10 @@ module.exports = {
         try{
             const projects = await Project.find({});
             
-
             return response.render('projects/index',{
                 title: 'Projects',
                 icon: 'library-books',
+                message: 'hello',
                 data: projects
             });
         } catch (e) {
@@ -28,12 +28,13 @@ module.exports = {
 
     store: async (request, response) => {
         try{
-            console.log('before creating ',request.body);
+            // console.log('before creating ',request.body);
             // check if project is already exists 
-            const alreadyExists = Project.exists({project: request.body.project});
+            const alreadyExists = await Project.exists({project: request.body.project});
+            
+            // console.log('already exists',alreadyExists);
             if(alreadyExists){
-                console.log('already exists');
-                request.flash('message', 'This name is already exists...');
+                request.flash('error', 'This name is already exists...');
                 return response.redirect('back');
             }
 
@@ -42,14 +43,16 @@ module.exports = {
                 description: request.body.description,
                 author: request.body.author,
                 project_type: request.body.project_type,
+                project_path: `${rootPath}/storage/${request.body.project}`,
                 readme_file: request.body.readme_file ? true : false,
                 gitignore: request.body.gitignore ? true : false
             });
             
             // create project folder in storage with optional files
-            FileSystemController.create(project);
+            await FileSystemController.create(project);
 
             const issue_url = `/project/${project._id}`;
+            request.flash('success', 'Project has been created successful...');
             return response.redirect(issue_url);
         }catch(e){
             console.error('error when creating project',e);

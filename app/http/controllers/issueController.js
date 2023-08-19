@@ -11,10 +11,22 @@ module.exports = {
 
     index: async (request, response) => {
         try {
-            const project = await Project.find({});
+            const project = await Project.find({}).populate('issue');
+            const details = await Project.aggregate([
+                // { "$match": { "name" : "Admin" }},
+                { $lookup: {
+                        from: "Issue",
+                        localField: "project",
+                        foreignField: "_id",
+                        as: "project_details",
+                    }
+                }
+            ])
+            console.log('details ', details);
             return response.render('issues/index', {
                 title: 'Issues',
-                data: project
+                data: project,
+                icon: 'bug'
             });
         } catch (e) {
             console.error('error when fetching projects', e);
@@ -26,26 +38,85 @@ module.exports = {
             const project = await Project.findById(request.body.project_id);
             
             if (project.isEmpty) {
-                console.log('project not found', request.body);
+                // console.log('project not found', request.body);
+                request.flash('error','Project not exists!!!');
                 return response.redirect('back');
             }
 
-            // check if label is already exists then return label id otherwise create and return label id 
-            const labelIds = await labelController.checkLabelId(request.body.label.toLowerCase());
-            // console.log('labelid',labelIds);
+            // check if issue is already exists 
+            
+            if(!request.body.issue_id){
+                const alreadyExists = await Issue.exists({title: request.body.title, author: request.body.author});
 
-            const issue = await Issue.create({
+                if(alreadyExists){
+                    request.flash('error','This issue is already exists!!!');
+                    return response.redirect('back');
+                }
+
+            }
+
+            // check if label is already exists then return label id otherwise create and return label id 
+            // console.log('status ', request.body.status);
+            const labelIds = await labelController.checkLabelId(request.body.labels.toLowerCase());
+            const documentData = {
                 project: project._id,
                 title: request.body.title,
                 description: request.body.description,
                 labels: labelIds,
-                author: request.body.author
-            });
-
+                author: request.body.author,
+                status: request.body.status != undefined && request.body.status != null  ? request.body.status : true
+            };
+            
+            let result = 'created';
+            let redirection = 'back';
+            // console.log('document ', documentData, 'issue id', request.body.issue_id);
+            if(request.body.issue_id){
+                await Issue.findByIdAndUpdate(request.body.issue_id,{$set: documentData}, {new: true});
+                result = 'Updated';
+                redirection = `/project/${project._id}`;
+            }else{
+                await Issue.create(documentData);
+            }
+            
             // console.log('after create issue', issue)
-            return response.redirect('back');
+            request.flash('success',`Issue has been ${result} successfully ...`);
+            return response.redirect(redirection);
         } catch (e) {
             console.error('error when fetching projects', e);
+        }
+    },
+
+    edit: async (request, response) => {
+        try {
+            const issue = await Issue.findById(request.params._id).populate('labels project');
+            if(!issue){
+                request.flash('error','no record found ...');
+                return response.redirect('back');
+            }
+            const labelsString = issue.labels.map(key => key.name).toString();
+            return response.render('issues/edit', {
+                title: 'Edit Issue',
+                data: issue,
+                icon: 'pencil',
+                labelsString: labelsString
+            });
+        } catch (error) {
+            console.error('error while fetching data ',error);
+        }
+    },
+
+    delete: async (request, response) => {
+        try {
+            const issue = await Issue.findByIdAndDelete(request.params._id);
+            if(!issue){
+                request.flash('error','no record found ...');
+                return response.redirect('back');
+            }
+            request.flash('success','record has been deleted successfully ...');
+            return response.redirect('back');
+
+        } catch (error) {
+            console.error('Error while delete record ', error);
         }
     }
 }
