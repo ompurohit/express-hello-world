@@ -41,6 +41,11 @@ app.use(session({
   
 app.use(flash());
 
+app.use(function (request, response, next) {
+    response.locals.message = request.flash();
+    next();
+})
+
 // initialize routes 
 app.use('/',require('./routes'));
 app.set("layout 404", false);

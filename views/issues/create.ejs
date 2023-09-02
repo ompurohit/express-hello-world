@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/editable.css">
 <script src="/js/custom/auto-search-script.js"></script>
+<script src="/js/custom/ajax-call.js"></script>
 <div class="row">
   <div class="col-lg-12 grid-margin">
     <div class="card">
@@ -91,9 +92,9 @@
                         </a>
                       </span>
                       <span class="btn-icon ">
-                        <a href="/issues/delete/<%= item._id %>" class="text-white" >
+                        <button type="button" onclick="confirmation('issue',`<%= item._id %>`)" class="btn btn-sm text-white" >
                           <i class="mdi mdi-delete"></i>
-                        </a>
+                        </button>
                       </span>
                     </div>
                   </td>

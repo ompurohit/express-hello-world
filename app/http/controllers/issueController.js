@@ -11,18 +11,23 @@ module.exports = {
 
     index: async (request, response) => {
         try {
-            const project = await Project.find({}).populate('issue');
-            const details = await Project.aggregate([
-                // { "$match": { "name" : "Admin" }},
-                { $lookup: {
-                        from: "Issue",
-                        localField: "project",
-                        foreignField: "_id",
-                        as: "project_details",
+            
+            const project = await Project.aggregate([
+                { 
+                    $lookup: {
+                        from: "issues",
+                        localField: "_id",
+                        foreignField: "project",
+                        as: "issuesData",
+                    }
+                },
+                { 
+                    $addFields: {
+                        issueCount: {$size: "$issuesData"}
                     }
                 }
-            ])
-            console.log('details ', details);
+            ]);
+            
             return response.render('issues/index', {
                 title: 'Issues',
                 data: project,
@@ -78,7 +83,7 @@ module.exports = {
                 await Issue.create(documentData);
             }
             
-            // console.log('after create issue', issue)
+            console.log('after create issue', result);
             request.flash('success',`Issue has been ${result} successfully ...`);
             return response.redirect(redirection);
         } catch (e) {

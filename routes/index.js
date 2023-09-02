@@ -3,11 +3,12 @@ var router = express.Router();
 
 
 // controllers 
-const projectController = require('../app/http/controllers/projectController');
+// const projectController = require('../app/http/controllers/projectController');
 const pageNotFoundController = require('../app/http/controllers/pageNotFoundController');
+const homeController = require('../app/http/controllers/homeController');
 // const labelController = require('../app/http/controllers/labelController');
 
-router.get('/', projectController.index);
+router.get('/', homeController.index);
 router.use('/project',require('./project'));
 router.use('/issues',require('./issue'));
 // router.get('/labels/:name', labelController.getLabelsData);
