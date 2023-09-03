@@ -21,7 +21,6 @@ const projectSchema = new mongoose.Schema(
         
         project_path: {
             type: String,
-            required: true
         },
         
         readme_file: {

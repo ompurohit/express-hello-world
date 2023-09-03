@@ -11,7 +11,7 @@
           <th>Projects name</th>
           <th>Description</th>
           <th>Author</th>
-          <th>Status</th>
+          <!-- <th>Status</th> -->
           <th>Action</th>
         </tr>
       </thead>
@@ -21,15 +21,15 @@
           <td><%= item.project %> <a href="/project/<%= item._id %>"><i class="mdi mdi-open-in-new"></i></a></td>
           <td><%= item.description %></td>
           <td class="text-danger"><%= item.author %></i></td>
-          <td>
+          <!-- <td>
             <label class="badge badge-<%= item.status ? 'danger' : 'success' %>">
               <%= item.status ? 'Open' : 'Closed' %>
             </label>
-          </td>
+          </td> -->
           <td>
             <div class="d-flex justify-content-start align-items-center">
               <span class="btn-icon mr-2">
-                <a href="/issues/edit/<%= item.id %>" class="text-white">
+                <a href="/project/edit/<%= item.id %>" class="text-white">
                   <i class="mdi mdi-pencil"></i>
                 </a>
               </span>
@@ -43,7 +43,7 @@
         </tr>
         <% } %> <% }else{ %>
             <tr>
-                <td colspan="5">no record found...</td>
+                <td colspan="4">no record found...</td>
             </tr>
         <% } %>
       </tbody>

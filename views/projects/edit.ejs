@@ -1,7 +1,7 @@
 <script src="/js/custom/project.js"></script>
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title">Create a new project</h4>
+    <h4 class="card-title">Edit Project</h4>
     
     <p class="card-description">
       A repository contains all project files, including the revision history.
@@ -13,23 +13,24 @@
       <span class="text-danger">(*)</span>.
     </p>
     <form class="forms-sample" method="post" action="/project/store">
+      <input type="hidden" name="project_id" value="<%= data._id  %>">
       <div class="form-group">
         <label for="ownerName">Owner Name <span class="text-danger">*</span></label>
-        <input type="text" name="author" class="form-control" id="ownerName" placeholder="owner name" required/>
+        <input type="text" name="author" value="<%=data.author%>" class="form-control" id="ownerName" placeholder="owner name" required/>
       </div>
       <div class="form-group">
         <label for="projectName">Project Name <span class="text-danger">*</span></label>
-        <input type="text" name="project" class="form-control" id="projectName" placeholder="project name" required/>
+        <input type="text" name="project" class="form-control" value="<%=data.project%>"  id="projectName" placeholder="project name" required/>
       </div>
       <div class="form-group">
         <label for="description">Description <span class="text-danger">*</span></label>
-        <textarea name="description" class="form-control" id="description" cols="15" rows="5" required></textarea>
+        <textarea name="description" class="form-control" value="<%=data.description%>"  id="description" cols="15" rows="5" required><%=data.description%>" </textarea>
       </div>
       <div class="form-group">
         <div class="form-check">
           <label class="form-check-label">
             <i class="mdi mdi-book-variant text-secondary"></i>
-            <input type="radio" class="form-check-input" name="project_type" id="public" onclick="getRepoType('public')" value="public" required/>
+            <input type="radio" class="form-check-input" onclick="getRepoType('public')" name="project_type"  id="public" value="public" checked="<%=data.project_type=='public'%>"  required/>
             Public
           </label>
           <span class="text-secondary text-small ml-5">Anyone on the internet can see this repository. You choose who
@@ -40,7 +41,7 @@
         <div class="form-check">
           <label class="form-check-label">
             <i class="mdi mdi-lock text-secondary"></i>
-            <input type="radio" class="form-check-input" onclick="getRepoType('private')"  name="project_type" id="private" value="private" required/>
+            <input type="radio" class="form-check-input" onclick="getRepoType('private')"  name="project_type" id="private" value="private" checked="<%=data.project_type=='private'%>"  required/>
             Private
           </label>
           <span class="text-secondary text-small ml-5">You choose who can see and commit to this repository.</span>
@@ -51,7 +52,7 @@
         <h4 class="text-secondary">Initialize this repository with:</h4>
         <div class="form-check form-check-flat form-check-primary">
           <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" name="readme_file" />Add a README file
+            <input type="checkbox" class="form-check-input" name="readme_file" checked="<%=data.readme_file%>" />Add a README file
           </label>
           <span class="text-secondary text-small ml-5">This is where you can write a long description for your project. <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes">Learn more about READMEs.</a></span>
         </div>
@@ -59,18 +60,18 @@
       <div class="form-group">
         <div class="form-check form-check-flat form-check-primary">
           <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" name="gitignore" />Add .gitignore
+            <input type="checkbox" class="form-check-input" name="gitignore" checked="<%=data.gitignore%>" />Add .gitignore
           </label>
         <span class="text-secondary text-small ml-5">Choose which files not to track from a list of templates. <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files">Learn more about ignoring files.</a></span>
         </div>
 
       </div>
       <div class="form-group">
-        <span class="text-secondary text-small"><i class="mdi mdi-information text-secondary"></i> You are creating a <em class="repo_type">public</em> repository in your personal account.</span>
+        <span class="text-secondary text-small"><i class="mdi mdi-information text-secondary"></i> You are creating a <em class="repo_type"><%= data.project_type=='private' ? 'private' : 'public' %></em> repository in your personal account.</span>
       </div>
       
       <button type="submit" class="btn btn-gradient-primary me-2">
-        Create Project
+        Update Project
       </button>
       <button type="button" class="btn btn-light">Cancel</button>
     </form>

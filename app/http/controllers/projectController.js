@@ -1,7 +1,7 @@
 const Project = require("../../models/project");
 const Issue = require("../../models/issue");
 const Label = require("../../models/label");
-const FileSystemController = require('./fileSystemController');
+// const FileSystemController = require('./fileSystemController');
 
 module.exports = {
     index: async (request,response) => {
@@ -29,31 +29,50 @@ module.exports = {
     store: async (request, response) => {
         try{
             // console.log('before creating ',request.body);
-            // check if project is already exists 
-            const alreadyExists = await Project.exists({project: request.body.project});
+            // check if project id is exists in request then update project else create 
             
-            // console.log('already exists',alreadyExists);
+            // check if project is already exists 
+            let alreadyExists;
+            
+            if(!request.body.project_id){
+                alreadyExists = await Project.exists({project: request.body.project});
+            }else{
+                alreadyExists = await Project.exists(
+                    { $and :[{_id:{$ne:request.body.project_id}},{project: request.body.project}]}
+                );
+            }
+            
             if(alreadyExists){
                 request.flash('error', 'This name is already exists...');
                 return response.redirect('back');
             }
-
-            const project = await Project.create({
+            
+            const documentData = {
                 project: request.body.project,
                 description: request.body.description,
                 author: request.body.author,
                 project_type: request.body.project_type,
-                project_path: `${rootPath}/storage/${request.body.project}`,
+                // project_path: `${rootPath}/storage/${request.body.project}`,
                 readme_file: request.body.readme_file ? true : false,
                 gitignore: request.body.gitignore ? true : false
-            });
-            
-            // create project folder in storage with optional files
-            await FileSystemController.create(project);
+            };
 
-            const issue_url = `/project/${project._id}`;
-            request.flash('success', 'Project has been created successful...');
-            return response.redirect(issue_url);
+            let result = 'Update';
+            let redirection = '/project';
+            // console.log('document ', documentData, 'issue id', request.body.issue_id);
+            if(request.body.project_id){
+                await Project.findByIdAndUpdate(request.body.project_id,{$set: documentData}, {new: true});
+            }else{
+                const project = await Project.create(documentData);
+                redirection = `/project/${project._id}`;
+                result = 'Create';
+                
+            }
+            // create project folder in storage with optional files
+            // await FileSystemController.create(project);
+
+            request.flash('success', `Project has been ${result} successful...`);
+            return response.redirect(redirection);
         }catch(e){
             console.error('error when creating project',e);
         }
@@ -78,6 +97,23 @@ module.exports = {
             });
         } catch (e) {
             console.error('error when fetching projects', e);
+        }
+    },
+
+    edit: async (request, response) => {
+        try {
+            const project = await Project.findById(request.params._id);
+            if(!project){
+                request.flash('error','no record found ...');
+                return response.redirect('back');
+            }
+            return response.render('projects/edit', {
+                title: 'Edit Project',
+                data: project,
+                icon: 'pencil'
+            });
+        } catch (error) {
+            console.error('error while fetching data ',error);
         }
     },
 
