@@ -60,7 +60,7 @@
             <% if(data.length) {%>
               <% for(let item of data) {%>
                 <tr>
-                  <td class="py-1 author-avatar">
+                  <td class="author-avatar">
                     <img src="/images/faces-clipart/pic-1.png" alt="image" />
                     <%= item.author %>
                   </td>
@@ -85,14 +85,14 @@
                     <%}%>
                   </td>
                   <td>
-                    <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-start align-items-center">
                       <span class="btn-icon mr-2">
                         <a href="/issues/edit/<%= item.id %>" class="text-white">
                           <i class="mdi mdi-pencil"></i>
                         </a>
                       </span>
                       <span class="btn-icon ">
-                        <button type="button" onclick="confirmation('issue',`<%= item._id %>`)" class="btn btn-sm text-white" >
+                        <button type="button" onclick="confirmation('issues',`<%= item._id %>`)" class="btn btn-sm text-white" >
                           <i class="mdi mdi-delete"></i>
                         </button>
                       </span>

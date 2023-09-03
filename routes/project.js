@@ -10,6 +10,7 @@ router.get('/', projectController.index);
 router.get('/create', projectController.create);
 router.post('/store', projectController.store);
 router.get('/:_id', projectController.issue);
+router.get('/delete/:_id', projectController.delete);
 
 
 

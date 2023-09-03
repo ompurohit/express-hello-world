@@ -1,4 +1,3 @@
-import PopupManager from 'https://cdn.jsdelivr.net/gh/jorgeabrahan/popup_library@67068b1/popup/Popup.js'
 /**
  * Confirmation Pop up before click on delete button
  * @param {*} deletion_type 
@@ -8,24 +7,24 @@ import PopupManager from 'https://cdn.jsdelivr.net/gh/jorgeabrahan/popup_library
 // custom close button
 const btnClose = '<span class="btn btn-sm btn-danger">close</span>'
 // custom styles
-// const style = 'border-width: 2px; border-style: solid; border-color: gray'/
-// init
-const Popup = new PopupManager({ btnClose })
-
 function confirmation(deletion_type,_id){
-    Popup.display({
-    title: 'Delete file',
-    content: `Are you sure you want to delete this issue?`,
-    buttons: {
-        elements: [
-        { text: 'Confirm', type: 'confirm', handler: onFileDelete },
-        { text: 'Cancel', type: 'error', handler: () => ConfirmationPopup.close() }
-        ]
-    }
+	Swal.fire({
+        title: 'Are you sure?',
+        text: `You want to delete this ${deletion_type}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+        }).then(async(result) => {
+        if (result.isConfirmed) {
+            const responseData = await fetch(`/${deletion_type}/delete/${_id}`);
+            const resultData = await responseData.json();
+            Swal.fire({
+                icon: resultData.status,
+                title: resultData.data.title,
+                text: resultData.message,
+            }).then(()=>location.reload());
+        }
     })
-    // const result = confirm("Are you sure you want to delete?");
-    // if(result){
-    console.log("Deleted", _id, deletion_type);
-    //  href="/issues/delete/<%= item._id %>" 
-    // }
 }

@@ -112,16 +112,21 @@ module.exports = {
 
     delete: async (request, response) => {
         try {
-            const issue = await Issue.findByIdAndDelete(request.params._id);
+            
+            const issue = await Issue.findById(request.params._id);
+            
             if(!issue){
-                request.flash('error','no record found ...');
-                return response.redirect('back');
+                return response.send({status:'error', data: {'title':'Oops'},message: 'no record found ...'});
             }
-            request.flash('success','record has been deleted successfully ...');
-            return response.redirect('back');
-
+            if(issue.deleteOne()){
+                // console.log('issue deleted', issue);
+                return response.send({status:'success', data: {'title':'Yay'},message: 'record has bee deleted successfully...'});
+            }
+            
+            return response.send({status:'error', data: {'title':'Oops'},message:'Something went wrong...'});
         } catch (error) {
-            console.error('Error while delete record ', error);
+            console.log('Error while delete record ', error);
+            return response.send({status:'error', data: {'title':'Oops'},message: error.message});
         }
     }
 }

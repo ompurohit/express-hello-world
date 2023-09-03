@@ -81,4 +81,24 @@ module.exports = {
         }
     },
 
+    delete: async (request, response) => {
+        try {
+            const project = await Project.findById(request.params._id);
+            if(!project){
+                return response.json({status:'error', data: {'title':'Oops'},message: 'Project not found...'});
+            }
+            const issues = await Issue.deleteMany({project: project._id});
+            console.log('issues '+issues);
+
+            if(project.deleteOne()){
+                return response.json({status:'success', data: {'title':'Yay'},message: 'record has bee deleted successfully...'});
+            }
+            return response.json({status:'error', data: {'title':'Oops'},message: 'Something went wrong...'});
+            
+        } catch (error) {
+            console.error('Error while delete record ', error);
+            return response.json({status:'error', data: {'title':'Oops'},message: error.message});
+        }
+    }
+
 }
