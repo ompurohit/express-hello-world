@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Issue Tracker 2.0</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="/css/vendor.bundle.base.css" />
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- End layout styles -->
+    <%- style %>
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <%- include('./partials/_navigation-bar') %>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <%- include('./partials/_sidebar') %>
+        
+        <div class="main-panel">
+            <!-- partial -->
+            <div class="content-wrapper">
+              <%- include('./partials/_header') %>
+              <%- include('./partials/_alerts') %>
+              <%- body %>
+          </div>
+          <!-- main-panel ends -->
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <%- include('./partials/_footer') %>
+          <!-- partial -->
+        </div>
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="/js/chart.min.js"></script>
+    <script src="/js/jquery.cookie.js" type="text/javascript"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <!-- <script src="/js/off-canvas.js"></script> -->
+    <script src="/js/hoverable-collapse.js"></script>
+    <script src="/js/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <%- script %>
+    <!-- <script src="/js/custom/dashboard.js"></script> -->
+    <!-- <script src="/js/custom/todolist.js"></script> -->
+    <!-- End custom js for this page -->
+    <script>
+      const message = document.querySelector('.alert' );
+      const closeBtn = document.querySelector('.close-btn' );
+      if (message != null) {
+          setTimeout( function() {
+              message.remove();
+          }, 5000 );
+      }
+
+      if (closeBtn != null) {
+        closeBtn.addEventListener('click',(e) => {
+          message.remove();
+        })
+      }
+
+    </script>
+  </body>
+</html>

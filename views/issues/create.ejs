@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="/css/editable.css">
+<script src="/js/custom/auto-search-script.js"></script>
+<script src="/js/custom/ajax-call.js"></script>
+<div class="row">
+  <div class="col-lg-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-description"> Create <%= project.project %>'s Issues</p>
+        <form method="post" action="/issues/store" class="form-inline">
+          <input type="hidden" name="project_id" value="<%= project._id%>">
+          <div class="row">
+            <div class="col-md-12 form-inline">
+              <label class="sr-only" for="title">Title</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="title" placeholder="Title" name="title" required>
+      
+              <label class="sr-only" for="description">Description</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="description" placeholder="Description" name="description" required>
+    
+                
+              <label class="sr-only" for="author">Author</label>
+              <input type="text" class="form-control mb-2 mr-sm-2" id="author" placeholder="author" name="author">
+            </div>
+            <div class="col-md-12 form-inline">
+              <!-- <label class="sr-only" for="label">Label</label> -->
+              <input type="hidden" name="labels" id="labelInputs" value="">
+              <div class="tag-area form-control padding-4">
+                  <label for="tag-input" class="label sr-only" >Add Label</label>
+                  <ul>
+                      <input type="text" class="tag-input" id="tag-input" placeholder="Add labels"/>
+                  </ul>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-gradient-primary mb-2">Create</button>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-description">Issue Lists:</code>
+        </p>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th> Author </th>
+              <th> Title </th>
+              <th> Description </th>
+              <th> Status </th>
+              <th> Labels </th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(data.length) {%>
+              <% for(let item of data) {%>
+                <tr>
+                  <td class="author-avatar">
+                    <img src="/images/faces-clipart/pic-1.png" alt="image" />
+                    <%= item.author %>
+                  </td>
+                  <td>
+                      <%= item.title %>
+                  </td>
+                  <td>
+                    <%= item.description %>
+                  </td>
+                  <td>
+                    <label class="badge badge-<%= item.status ? 'danger' : 'success' %>">
+                      <%= item.status ? 'Open' : 'Closed' %>
+                    </label>
+                  </td>
+                  <td>
+                    <% if(item.labels.length) {%>
+                      <% for (const label of item.labels) { %>
+                        <%= label.name %>,
+                      <%}%>
+                    <%}else{%>
+                    -
+                    <%}%>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-start align-items-center">
+                      <span class="btn-icon mr-2">
+                        <a href="/issues/edit/<%= item.id %>" class="text-white">
+                          <i class="mdi mdi-pencil"></i>
+                        </a>
+                      </span>
+                      <span class="btn-icon ">
+                        <button type="button" onclick="confirmation('issues',`<%= item._id %>`)" class="btn btn-sm text-white" >
+                          <i class="mdi mdi-delete"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              <% } %>
+            <% }else{ %>
+              <tr>
+                <td colspan="6" align="center">no record found ...</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

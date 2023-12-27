@@ -1,0 +1,23 @@
+
+  <% if(message.success) {%>
+  <div class="alert alert-fill-success" role="alert">
+    <i class="mdi mdi-alert-circle"></i> Success! <%= message.success %>
+    <i class="mdi mdi-close-circle close-btn"></i>
+  </div>
+
+  <!-- Warning Modal -->
+  <%}else if(message.warning) {%>
+  <div class="alert alert-fill-warning" role="alert">
+    <i class="mdi mdi-alert-circle"></i> Warning! <%= message.warning %>
+    <i class="mdi mdi-close-circle close-btn"></i>
+  </div>
+  
+  <!-- Error Modal -->
+  <% } else if(message.error) {%>
+  <div class="alert alert-fill-danger" role="alert">
+    <i class="mdi mdi-alert-circle"></i> Error! <%= message.error %>
+    <i class="mdi mdi-close-circle close-btn"></i>
+  </div>
+  
+  <%}%>
+  
